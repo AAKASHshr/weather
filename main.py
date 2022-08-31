@@ -12,7 +12,12 @@ querystring = {
 
 def switch():
     while True:
-
+        command =  input("Do you want the current weather data? :: ").lower().strip()
+        if command == "yes":
+            start()
+            pass
+        elif command == "no":
+            continue
 
 def start():
     response = requests.request("GET", url, params=querystring)
