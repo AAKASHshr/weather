@@ -7,7 +7,9 @@ querystring = {
 "location":"-26.6559759, 153.0918365",         #lat long of sunshine coast 
 "fields":["temperature","sunriseTime","sunsetTime","windSpeed","humidity"],
 "units":"metric",                               #celcius    
-"timesteps":"1h",                               
+"timesteps":"1h",  
+"startTime":"now",
+"endTime":"nowPlus1h",                             
 "apikey":"VM5OHj1SWudXbY1U1OWELCO4Iyp5q6xR"}
 
 def switch():

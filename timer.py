@@ -9,24 +9,19 @@ querystring = {
 "location":"-26.6559759, 153.0918365",         #lat long of sunshine coast 
 "fields":["temperature","sunriseTime","sunsetTime","windSpeed","humidity"],
 "units":"metric",                               #celcius    
-"timesteps":"1h",                               
+"timesteps":"1h",   
+"startTime":"now",
+"endTime":"nowPlus1h",                             
 "apikey":"VM5OHj1SWudXbY1U1OWELCO4Iyp5q6xR"}
 
-# def switch():
-#     while True:
-#         command =  input("Do you want the current weather data? :: ").lower().strip()
-#         if command == "yes":
-#             start()
-#             pass
-#         elif command == "no":
-#             continue
-#         elif command == "quit":
-#             break
-#         else:
-#             print("wrong command")
-#             continue
-def check():
-    print("hello")
+def switch():
+    #schedule.every().day.at("00:00").do(check)
+
+    schedule.every(10).seconds.do(start)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 def start():
@@ -37,14 +32,5 @@ def start():
     with open('weather.json','w') as f:   #loggin the data into json file
         json.dump(data, f, indent=2)
 
-#schedule.every().day.at("00:00").do(check)
-
-schedule.every(10).seconds.do(check)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
-
-
-# if __name__=="__main__":
-#     switch()
+if __name__=="__main__":
+    switch()
