@@ -18,6 +18,11 @@ def switch():
             pass
         elif command == "no":
             continue
+        elif command == "quit":
+            break
+        else:
+            print("wrong command")
+            continue
 
 def start():
     response = requests.request("GET", url, params=querystring)
