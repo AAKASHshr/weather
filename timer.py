@@ -15,7 +15,8 @@ querystring = {
 "apikey":"VM5OHj1SWudXbY1U1OWELCO4Iyp5q6xR"}
 
 def switch():
-    #schedule.every().day.at("00:00").do(check)
+    '''creates a schedule everyday to generate the weather data'''
+    #schedule.every().day.at("00:00").do(start)
 
     schedule.every(10).seconds.do(start)
 
@@ -25,6 +26,7 @@ def switch():
 
 
 def start():
+    '''connects with the api and loads data into json file'''
     response = requests.request("GET", url, params=querystring)
     print(response.text)
 

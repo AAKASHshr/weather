@@ -3,27 +3,27 @@
     "timelines": [
       {
         "timestep": "1h",
-        "endTime": "2022-09-01T06:00:00Z",
-        "startTime": "2022-09-01T05:00:00Z",
+        "endTime": "2022-09-15T01:00:00Z",
+        "startTime": "2022-09-15T00:00:00Z",
         "intervals": [
           {
-            "startTime": "2022-09-01T05:00:00Z",
+            "startTime": "2022-09-15T00:00:00Z",
             "values": {
-              "humidity": 75,
-              "sunriseTime": "2022-08-31T20:01:00Z",
-              "sunsetTime": "2022-09-01T07:35:00Z",
-              "temperature": 20.38,
-              "windSpeed": 3.5
+              "humidity": 66,
+              "sunriseTime": "2022-09-14T19:45:00Z",
+              "sunsetTime": "2022-09-15T07:40:00Z",
+              "temperature": 20.13,
+              "windSpeed": 1.69
             }
           },
           {
-            "startTime": "2022-09-01T06:00:00Z",
+            "startTime": "2022-09-15T01:00:00Z",
             "values": {
-              "humidity": 77.25,
-              "sunriseTime": "2022-08-31T20:01:00Z",
-              "sunsetTime": "2022-09-01T07:35:00Z",
-              "temperature": 19.72,
-              "windSpeed": 3.15
+              "humidity": 65.08,
+              "sunriseTime": "2022-09-14T19:45:00Z",
+              "sunsetTime": "2022-09-15T07:40:00Z",
+              "temperature": 20.47,
+              "windSpeed": 3.87
             }
           }
         ]
