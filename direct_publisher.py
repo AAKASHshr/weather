@@ -78,7 +78,6 @@ outbound_msg_builder = messaging_service.message_builder() \
 
 print("\nSend a KeyboardInterrupt to stop publishing\n")
 
-
 ###
 url = "https://api.tomorrow.io/v4/timelines"
 querystring = {
@@ -107,6 +106,8 @@ try:
     while True:
         topic = Topic.of(TOPIC_PREFIX + f'/direct/pub/')
         # Direct publish the message 
+        #schedule.every().day.at("00:00").do(start)
+        #schedule.every().hour.do(start)
         schedule.every(20).seconds.do(start)
         print(f'Publishing message on {topic}')
         while True:

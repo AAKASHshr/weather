@@ -20,11 +20,11 @@ class MessageHandlerImpl(MessageHandler):
         if isinstance(payload, bytearray):
             print(f"Received a message of type: {type(payload)}. Decoding to string")
             payload = payload.decode()
-
+        
         topic = message.get_destination_name()
         print("\n" + f"Message Payload String: {payload} \n")
-        print("\n" + f"Message Topic: {topic} \n")
-        print("\n" + f"Message dump: {message} \n")
+        #print("\n" + f"Message Topic: {topic} \n")
+        #print("\n" + f"Message dump: {message} \n")
 
 # Inner classes for error handling
 class ServiceEventHandler(ReconnectionListener, ReconnectionAttemptListener, ServiceInterruptionListener):
