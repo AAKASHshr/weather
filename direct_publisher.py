@@ -82,11 +82,9 @@ print("\nSend a KeyboardInterrupt to stop publishing\n")
 url = "https://api.tomorrow.io/v4/timelines"
 querystring = {
 "location":"-26.6559759, 153.0918365",         #lat long of sunshine coast 
-"fields":["temperature","sunriseTime","sunsetTime","windSpeed","humidity"],
+"fields":["temperature","windSpeed","humidity"],
 "units":"metric",                               #celcius    
-"timesteps":"1h",   
-"startTime":"now",
-"endTime":"nowPlus1h",                             
+"timesteps":"current",                              
 "apikey":"VM5OHj1SWudXbY1U1OWELCO4Iyp5q6xR"}
 
 print("sending message")

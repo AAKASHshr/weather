@@ -2,6 +2,7 @@
 import os
 import platform
 import time
+import json
 
 # Import Solace Python  API modules from the solace package
 from solace.messaging.messaging_service import MessagingService, ReconnectionListener, ReconnectionAttemptListener, ServiceInterruptionListener, RetryStrategy, ServiceEvent
@@ -20,8 +21,10 @@ class MessageHandlerImpl(MessageHandler):
         if isinstance(payload, bytearray):
             print(f"Received a message of type: {type(payload)}. Decoding to string")
             payload = payload.decode()
-        
-        topic = message.get_destination_name()
+        data = json.loads(payload)
+        with open('weather.json','w') as f:   #loggin the data into json file
+            json.dump(data, f, indent=2)
+        #topic = message.get_destination_name()
         print("\n" + f"Message Payload String: {payload} \n")
         #print("\n" + f"Message Topic: {topic} \n")
         #print("\n" + f"Message dump: {message} \n")
