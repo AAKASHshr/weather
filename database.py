@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
 from datetime import datetime
@@ -35,3 +36,32 @@ with InfluxDBClient(url="http://localhost:8086", token=token, org=org, default_t
                                                       record_measurement_name="weather",
                                                       record_time_key="startTime",
                                                       record_field_keys=["humidity", "temperature", "windSpeed"])
+=======
+import json
+import influxdb_client, os, time
+from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client.client.write_api import SYNCHRONOUS
+
+token = os.environ.get("INFLUXDB_TOKEN")
+org = "aakash.shrestha@ui.city"
+url = "https://ap-southeast-2-1.aws.cloud2.influxdata.com"
+
+client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
+
+bucket="weather"
+
+with open('weather.json', 'r') as file:
+    json_data = json.load(file)
+
+write_api = client.write_api(write_options=SYNCHRONOUS)
+   
+for value in range(5):
+  point = (
+    Point("measurement")
+    .tag("tagname1", "tagvalue1")
+    .field(json_data, value)
+  )
+  write_api.write(bucket=bucket, org="aakash.shrestha@ui.city", record=point)
+  time.sleep(1) # separate points by 1 second
+
+>>>>>>> b99c2b0 (adding database)
