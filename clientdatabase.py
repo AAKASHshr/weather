@@ -27,6 +27,14 @@ with InfluxDBClient(url="http://localhost:8086", token=token, org=org, default_t
     intervals = list(map(lambda timeline: timeline['intervals'], timelines))
     # flatten intervals
     intervals = [flatten_interval(interval) for sublist in intervals for interval in sublist]
+    #changing integer values to float
+    for i in intervals:
+        if i.get('temperature') == int(i.get('temperature')):
+            i['temperature']= float(i.get('temperature'))
+        if i.get('humidity') == int(i.get('humidity')):
+            i['humidity'] = float(i.get('humidity'))
+        if i.get('windSpeed') == int(i.get('windSpeed')):
+            i['windSpeed'] = float(i.get('windSpeed'))
     # write data
     client.write_api(write_options=SYNCHRONOUS).write(bucket=bucket,
                                                       record=intervals,
