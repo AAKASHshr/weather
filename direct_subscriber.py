@@ -22,6 +22,7 @@ class MessageHandlerImpl(MessageHandler):
             print(f"Received a message of type: {type(payload)}. Decoding to string")
             payload = payload.decode()
         data = json.loads(payload)
+       # data['data']['timelines'][3]['intervals'][1]['values']['humidity','temperature','windSpeed'] = data['data']['timelines'][3]['intervals'][1]['values'][float('humidity'),float('temperature'),float('windSpeed')]
         with open('weather.json','w') as f:   #loggin the data into json file
             json.dump(data, f, indent=2)
         #topic = message.get_destination_name()

@@ -1,7 +1,7 @@
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
 import json
-
+import math 
 
 # returns JSON object as
 # a dictionary
@@ -27,7 +27,6 @@ with InfluxDBClient(url="http://localhost:8086", token=token, org=org, default_t
     intervals = list(map(lambda timeline: timeline['intervals'], timelines))
     # flatten intervals
     intervals = [flatten_interval(interval) for sublist in intervals for interval in sublist]
-    
     # write data
     client.write_api(write_options=SYNCHRONOUS).write(bucket=bucket,
                                                       record=intervals,
