@@ -20,8 +20,8 @@ source venv/bin/activate
 
 #install the modules in terminal
 pip install requests
-pip install scehdule
-pip install influxdb_client
+pip install schedule
+pip install influxdb-client
 pip install solace-pubsubplus
 
 #install docker engine
