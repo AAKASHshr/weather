@@ -16,7 +16,7 @@ influxdb
 pip install requests
 pip install scehdule
 python3 -m pip install --user virtualenv
-python3 -m venv env
+python3 -m venv venv
 
 #install docker engine
 https://docs.docker.com/engine/install/ubuntu/
