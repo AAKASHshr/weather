@@ -21,6 +21,7 @@ pip install solace-pubsubplus
 
 #install docker engine
 https://docs.docker.com/engine/install/ubuntu/
+use "docker start solace" to start the docker container
 
 #initiate solace from docker
 https://solace.com/products/event-broker/software/getting-started/
@@ -28,6 +29,7 @@ sign up for solace and use localhost:8080/ to run the solace client
 
 #install influx open time series database
 https://portal.influxdata.com/downloads/
+run "influxd" on terminal or powershell
 
 #run influx from localhost
 http://localhost/8086
