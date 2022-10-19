@@ -17,6 +17,7 @@ pip install requests
 pip install scehdule
 python3 -m pip install --user virtualenv
 python3 -m venv venv
+pip install solace-pubsubplus
 
 #install docker engine
 https://docs.docker.com/engine/install/ubuntu/
