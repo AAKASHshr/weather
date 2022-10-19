@@ -104,7 +104,8 @@ try:
         topic = Topic.of(TOPIC_PREFIX + f'/direct/pub/')
         # Direct publish the message 
         #schedule.every().day.at("00:00").do(start)
-        schedule.every().hour.do(start)
+        #schedule.every().hour.do(start)
+        schedule.every(15).minutes.do(start)
         #schedule.every(20).seconds.do(start)
         print(f'Publishing message on {topic}')
         while True:
