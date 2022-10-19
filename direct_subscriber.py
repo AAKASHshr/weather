@@ -12,8 +12,18 @@ from solace.messaging.receiver.message_receiver import MessageHandler, InboundMe
 
 if platform.uname().system == 'Windows': os.environ["PYTHONUNBUFFERED"] = "1" # Disable stdout buffer 
 
+#Topic for subscription
 TOPIC_PREFIX = "get/live/weather"
 
+# Broker Config
+broker_props = {
+    "solace.messaging.transport.host": os.environ.get('SOLACE_HOST') or "ws://localhost:8008",
+    "solace.messaging.service.vpn-name": os.environ.get('SOLACE_VPN') or "default",
+    "solace.messaging.authentication.scheme.basic.username": os.environ.get('SOLACE_USERNAME') or "default",
+    "solace.messaging.authentication.scheme.basic.password": os.environ.get('SOLACE_PASSWORD') or "default"
+    }
+
+####################################################
 # Handle received messages
 class MessageHandlerImpl(MessageHandler):
     def on_message(self, message: InboundMessage):
@@ -23,16 +33,19 @@ class MessageHandlerImpl(MessageHandler):
             print(f"Received a message of type: {type(payload)}. Decoding to string")
             payload = payload.decode()
         data = json.loads(payload)
-       # data['data']['timelines'][3]['intervals'][1]['values']['humidity','temperature','windSpeed'] = data['data']['timelines'][3]['intervals'][1]['values'][float('humidity'),float('temperature'),float('windSpeed')]
+        #saves the log in JSON file
         with open('weather.json','w') as f:   #loggin the data into json file
             json.dump(data, f, indent=2)
         #opening database script
         Popen(["python3","clientdatabase.py"])
-        #topic = message.get_destination_name()
+        #prints the payload
         print("\n" + f"Message Payload String: {payload} \n")
+
+        #topic = message.get_destination_name()
         #print("\n" + f"Message Topic: {topic} \n")
         #print("\n" + f"Message dump: {message} \n")
 
+#################################################
 # Inner classes for error handling
 class ServiceEventHandler(ReconnectionListener, ReconnectionAttemptListener, ServiceInterruptionListener):
     def on_reconnected(self, e: ServiceEvent):
@@ -49,22 +62,12 @@ class ServiceEventHandler(ReconnectionListener, ReconnectionAttemptListener, Ser
         print("\non_service_interrupted")
         print(f"Error cause: {e.get_cause()}")
         print(f"Message: {e.get_message()}")
-    
-# Broker Config
-broker_props = {
-    "solace.messaging.transport.host": os.environ.get('SOLACE_HOST') or "ws://localhost:8008",
-    "solace.messaging.service.vpn-name": os.environ.get('SOLACE_VPN') or "default",
-    "solace.messaging.authentication.scheme.basic.username": os.environ.get('SOLACE_USERNAME') or "default",
-    "solace.messaging.authentication.scheme.basic.password": os.environ.get('SOLACE_PASSWORD') or "default"
-    }
 
+###############################################
 # Build A messaging service with a reconnection strategy of 20 retries over an interval of 3 seconds
-# Note: The reconnections strategy could also be configured using the broker properties object
 messaging_service = MessagingService.builder().from_properties(broker_props)\
                     .with_reconnection_retry_strategy(RetryStrategy.parametrized_retry(20,3))\
                     .build()
-
-# Blocking connect thread
 messaging_service.connect()
 print(f'Messaging Service connected? {messaging_service.is_connected}')
 
@@ -84,10 +87,11 @@ for t in topics:
 direct_receiver = messaging_service.create_direct_message_receiver_builder()\
                         .with_subscriptions(topics_sub)\
                         .build()
-
 direct_receiver.start()
 print(f'Direct Subscriber is running? {direct_receiver.is_running()}')
 
+################################################
+#Subscribing to the tpoic and initializing the message handler
 try:
     print(f"Subscribing to: {topics}")
     # Callback for received messages
