@@ -89,6 +89,7 @@ querystring = {
 print("sending message")
 
 ###
+'''Function to send the outbound message'''
 def start():
     response = requests.request("GET", url, params=querystring)
     print(response.text)
@@ -97,8 +98,6 @@ def start():
                         .with_application_message_id(f'NEW')\
                         .build(data)
     direct_publisher.publish(destination=topic, message= outbound_msg)
-
-###
 try: 
     while True:
         topic = Topic.of(TOPIC_PREFIX + f'/direct/pub/')
@@ -112,7 +111,7 @@ try:
             schedule.run_pending()
             time.sleep(1)
     
-
+#Keyboard interuption
 except KeyboardInterrupt:
     print('\nTerminating Publisher')
     direct_publisher.terminate()
