@@ -13,10 +13,15 @@ solace pubsub
 influxdb
 
 #python modules
+initialise virtual environment in the directory
+pip install virtualenv
+virtual venv
+source venv/bin/activate
+
+#install the modules in terminal
 pip install requests
 pip install scehdule
-python3 -m pip install --user virtualenv
-python3 -m venv venv
+pip install influxdb_client
 pip install solace-pubsubplus
 
 #install docker engine
