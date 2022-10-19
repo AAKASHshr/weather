@@ -4,7 +4,6 @@ import platform
 import time
 import requests
 import schedule
-import json
 
 # Import Solace Python  API modules from the solace package
 from solace.messaging.messaging_service import MessagingService, ReconnectionListener, ReconnectionAttemptListener, ServiceInterruptionListener, RetryStrategy, ServiceEvent
@@ -105,8 +104,8 @@ try:
         topic = Topic.of(TOPIC_PREFIX + f'/direct/pub/')
         # Direct publish the message 
         #schedule.every().day.at("00:00").do(start)
-        #schedule.every().hour.do(start)
-        schedule.every(20).seconds.do(start)
+        schedule.every().hour.do(start)
+        #schedule.every(20).seconds.do(start)
         print(f'Publishing message on {topic}')
         while True:
             schedule.run_pending()

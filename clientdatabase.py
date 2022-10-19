@@ -1,7 +1,6 @@
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
 import json
-import math 
 
 # returns JSON object as
 # a dictionary
