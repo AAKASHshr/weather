@@ -12,8 +12,26 @@ from solace.messaging.publisher.direct_message_publisher import PublishFailureLi
 
 if platform.uname().system == 'Windows': os.environ["PYTHONUNBUFFERED"] = "1" # Disable stdout buffer 
 
-#MSG_COUNT = 5
+################################################################
+#Topic for the direct message
 TOPIC_PREFIX = "get/live/weather"
+#Parameters to connect to tomorrow.io 
+url = "https://api.tomorrow.io/v4/timelines"
+querystring = {
+"location":"-26.6559759, 153.0918365",         #lat long of sunshine coast 
+"fields":["temperature","windSpeed","humidity"],
+"units":"metric",                               #celcius    
+"timesteps":"current",                              
+"apikey":"VM5OHj1SWudXbY1U1OWELCO4Iyp5q6xR"}
+# Broker Config to run solace - pubsub plus
+broker_props = {
+    "solace.messaging.transport.host": os.environ.get('SOLACE_HOST') or "ws://localhost:8008",
+    "solace.messaging.service.vpn-name": os.environ.get('SOLACE_VPN') or "default",
+    "solace.messaging.authentication.scheme.basic.username": os.environ.get('SOLACE_USERNAME') or "default",
+    "solace.messaging.authentication.scheme.basic.password": os.environ.get('SOLACE_PASSWORD') or "default"
+    }
+
+################################################################
 
 # Inner classes for error handling
 class ServiceEventHandler(ReconnectionListener, ReconnectionAttemptListener, ServiceInterruptionListener):
@@ -37,21 +55,14 @@ class PublisherErrorHandling(PublishFailureListener):
     def on_failed_publish(self, e: "FailedPublishEvent"):
         print("on_failed_publish")
 
-# Broker Config. Note: Could pass other properties Look into
-broker_props = {
-    "solace.messaging.transport.host": os.environ.get('SOLACE_HOST') or "ws://localhost:8008",
-    "solace.messaging.service.vpn-name": os.environ.get('SOLACE_VPN') or "default",
-    "solace.messaging.authentication.scheme.basic.username": os.environ.get('SOLACE_USERNAME') or "default",
-    "solace.messaging.authentication.scheme.basic.password": os.environ.get('SOLACE_PASSWORD') or "default"
-    }
-
+################################################################
+#Starting the messaging service
 # Build A messaging service with a reconnection strategy of 20 retries over an interval of 3 seconds
-# Note: The reconnections strategy could also be configured using the broker properties object
 messaging_service = MessagingService.builder().from_properties(broker_props)\
                     .with_reconnection_retry_strategy(RetryStrategy.parametrized_retry(20,3))\
                     .build()
 
-# Blocking connect thread
+# Connecting the messaging service
 messaging_service.connect()
 print(f'Messaging Service connected? {messaging_service.is_connected}')
 
@@ -64,10 +75,11 @@ messaging_service.add_service_interruption_listener(service_handler)
 # Create a direct message publisher and start it
 direct_publisher = messaging_service.create_direct_message_publisher_builder().build()
 direct_publisher.set_publish_failure_listener(PublisherErrorHandling())
-
-# Blocking Start thread
 direct_publisher.start()
+#prints when the direct publisher is ready
 print(f'Direct Publisher ready? {direct_publisher.is_ready()}')
+
+################################################################
 
 # Prepare outbound message payload and body
 outbound_msg_builder = messaging_service.message_builder() \
@@ -76,19 +88,10 @@ outbound_msg_builder = messaging_service.message_builder() \
                 .with_property("language", "Python") \
 
 print("\nSend a KeyboardInterrupt to stop publishing\n")
-
-###
-url = "https://api.tomorrow.io/v4/timelines"
-querystring = {
-"location":"-26.6559759, 153.0918365",         #lat long of sunshine coast 
-"fields":["temperature","windSpeed","humidity"],
-"units":"metric",                               #celcius    
-"timesteps":"current",                              
-"apikey":"VM5OHj1SWudXbY1U1OWELCO4Iyp5q6xR"}
-
+#prints when the service is ready to send the payload
 print("sending message")
 
-###
+######################################################
 '''Function to send the outbound message'''
 def start():
     response = requests.request("GET", url, params=querystring)
@@ -101,11 +104,11 @@ def start():
 try: 
     while True:
         topic = Topic.of(TOPIC_PREFIX + f'/direct/pub/')
-        # Direct publish the message 
+        # Direct publish the message every 15 minutes
         #schedule.every().day.at("00:00").do(start)
         #schedule.every().hour.do(start)
-        schedule.every(15).minutes.do(start)
         #schedule.every(20).seconds.do(start)
+        schedule.every(15).minutes.do(start)
         print(f'Publishing message on {topic}')
         while True:
             schedule.run_pending()
