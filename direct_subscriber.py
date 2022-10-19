@@ -26,6 +26,7 @@ class MessageHandlerImpl(MessageHandler):
        # data['data']['timelines'][3]['intervals'][1]['values']['humidity','temperature','windSpeed'] = data['data']['timelines'][3]['intervals'][1]['values'][float('humidity'),float('temperature'),float('windSpeed')]
         with open('weather.json','w') as f:   #loggin the data into json file
             json.dump(data, f, indent=2)
+        #opening database script
         Popen(["python3","clientdatabase.py"])
         #topic = message.get_destination_name()
         print("\n" + f"Message Payload String: {payload} \n")
