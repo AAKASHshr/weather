@@ -2,23 +2,24 @@ from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
 import json
 
+#parameters to start the influxdb with python client library
+token = "TbQJR__90i9AUtSnbW008kypjbTry8fCxcHK-42ZS2H-_Whx7HXnuHnxKS59dJj_8nMniYn0eHIRqxl8p-s6XQ=="
+org = "Aakash.Shrestha@ui.city"
+bucket = "weather"
+
 # returns JSON object as
 # a dictionary
-
 app_version = 1.30
 with open('weather.json', 'r') as file:
     json_data = json.load(file)
 
-token = "d-DZy3fspsSbQf5z2mBKvKsPcy8HPSRJ_7M8wFI7p_ZPKh-n7e5H832AM6LgS4TvX-MCkU-CkCGOzPBcettpuw=="
-org = "Aakash.Shrestha@ui.city"
-bucket = "weather"
-
+#initializing influxdb with parameters
 with InfluxDBClient(url="http://localhost:8086", token=token, org=org, default_tags={'appversion': str(app_version)}, debug=False) as client:
+    '''function to flatten the json payload for retriving the data'''
     def flatten_interval(interval):
         values = interval['values']
         values['startTime'] = interval['startTime']
         return values
-
 
     # get timelines
     timelines = json_data['data']['timelines']
