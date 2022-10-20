@@ -3,15 +3,15 @@
     "timelines": [
       {
         "timestep": "current",
-        "endTime": "2022-10-19T16:37:00Z",
-        "startTime": "2022-10-19T16:37:00Z",
+        "endTime": "2022-10-19T23:59:00Z",
+        "startTime": "2022-10-19T23:59:00Z",
         "intervals": [
           {
-            "startTime": "2022-10-19T16:37:00Z",
+            "startTime": "2022-10-19T23:59:00Z",
             "values": {
-              "humidity": 81,
-              "temperature": 20.13,
-              "windSpeed": 3.81
+              "humidity": 68,
+              "temperature": 22.13,
+              "windSpeed": 4.31
             }
           }
         ]
